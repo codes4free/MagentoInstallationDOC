@@ -51,6 +51,28 @@ sudo apt install nginx
 sudo nano /etc/nginx/nginx.conf
     server_names_hash_bucket_size 64;
 sudo systemctl restart nginx
+
+sudo nano /etc/nginx/sites-available/ecommerce
+
+// escrever dentro o conteúdo abaixo
+upstream fastcgi_backend
+{
+     server  unix:/run/php/php8.2-fpm.sock;
+}
+server {
+        listen 80;
+        listen [::]:80;
+        server_name svhr-ecommerce2 svhr-ecommerce2.microware.com.br;
+        set $MAGE_ROOT /var/www/ecommerce;
+        include /var/www/ecommerce/nginx.conf.sample;
+        client_max_body_size 2M;
+
+        access_log /var/log/nginx/magento.access;
+        error_log /var/log/nginx/magento.error;
+}
+// fim
+
+sudo ln -s /etc/nginx/sites-available/ecommerce /etc/nginx/sites-enabled/
 ```
 
 ## ElasticSearch
@@ -116,34 +138,17 @@ sudo systemctl status varnish
 ```
 
 
-## Magento 
+## Magento
 ```
 cd /var/www
-composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6-p2 /var/www/magento2-2.4.6-p2
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6-p2 /var/www/ecommerce
 Public Key: 7d8df27f946bc44bfdbdb008cafa315b
 Private Key: ee253cef3714a26598c0cf6447b5dce2
 
-sudo nano /etc/nginx/sites-available/ecommerce
-upstream fastcgi_backend
-{
-     server  unix:/run/php/php8.2-fpm.sock;
-}
-server {
-        listen 80;
-        listen [::]:80;
-        server_name svhr-ecommerce2 svhr-ecommerce2.microware.com.br;
-        set $MAGE_ROOT /var/www/magento2-2.4.6-p2;
-        include /var/www/magento2-2.4.6-p2/nginx.conf.sample;
-        client_max_body_size 2M;
-
-        access_log /var/log/nginx/magento.access;
-        error_log /var/log/nginx/magento.error;
-}
-
-sudo ln -s /etc/nginx/sites-available/ecommerce /etc/nginx/sites-enabled/
 sudo nginx -s reload
 sudo nginx -t
-cd /var/www/magento2-2.4.6-p2
+
+cd /var/www/ecommerce
 find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
 find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
 chown -R :www-data .
