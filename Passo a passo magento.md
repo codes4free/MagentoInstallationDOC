@@ -86,6 +86,36 @@ sudo systemctl enable elasticsearch.service
 sudo systemctl start elasticsearch.service
 ```
 
+## OpenSearch
+```
+sudo wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.5.0/opensearch-2.5.0-linux-x64.tar.gz
+tar -xvf opensearch-2.5.0-linux-x64.tar.gz
+cd opensearch-2.5.0
+sudo swapoff -a
+
+# Edit the sysctl config file
+sudo vi /etc/sysctl.conf
+
+# Add a line to define the desired value
+# or change the value if the key exists,
+# and then save your changes.
+vm.max_map_count=262144
+
+# Reload the kernel parameters using sysctl
+sudo sysctl -p
+
+# Verify that the change was applied by checking the value
+cat /proc/sys/vm/max_map_count
+
+./opensearch-tar-install.sh
+
+sudo dpkg -i elasticsearch-8.5.0-amd64.deb
+sudo nano /etc/elasticsearch/elasticsearch.yml
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
+```
+
 ## MariaDB
 ```
 sudo apt update
