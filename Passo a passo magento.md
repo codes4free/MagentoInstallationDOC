@@ -108,12 +108,7 @@ sudo sysctl -p
 cat /proc/sys/vm/max_map_count
 
 ./opensearch-tar-install.sh
-
-sudo dpkg -i elasticsearch-8.5.0-amd64.deb
-sudo nano /etc/elasticsearch/elasticsearch.yml
-sudo systemctl daemon-reload
-sudo systemctl enable elasticsearch.service
-sudo systemctl start elasticsearch.service
+curl -X GET https://localhost:9200 -u 'admin:admin' --insecure
 ```
 
 ## MariaDB
