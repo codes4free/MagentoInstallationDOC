@@ -188,6 +188,6 @@ bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --b
 
 ## Magento OpenSearch
 ``` 
-bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
+bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magento --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
 
 ``` 
