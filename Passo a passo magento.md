@@ -1,38 +1,17 @@
 # Dependências Magento2 2.4.6p2
 
-- Composer 2.2
-- ElasticSearch 8.5
-- MariaDB 10.6
-- PHP 8.2
-- RabbitMQ 3.11
-- Redis 7.0
-- Varnish 7.3
-- Nginx 1.22
-
-## PHP
-- [Link para a seção PHP](#PHP)
-## Composer
-- [Link para a seção Composer](#Composer)
-## Nginx
-- [Link para a seção Nginx](#Nginx)
-## ElasticSearch
-- [Link para a seção ElasticSearch](#ElasticSearch)
-## OpenSearch
-- [Link para a seção OpenSearch](#OpenSearch)
-## MariaDB
-- [Link para a seção MariaDB](#MariaDB)
-## RabbitMQ
-- [Link para a seção RabbitMQ](#RabbitMQ)
-## Redis
-- [Link para a seção Redis](#Redis)
-## Varnish
-- [Link para a seção Varnish](#Varnish)
-## Magento
-- [Link para a seção Magento](#Magento)
-## Magento ElasticSearch
-- [Link para a seção Magento ElasticSearch](#Magento-ElasticSearch)
-## Magento OpenSearch
-- [Link para a seção Magento OpenSearch](#Magento-OpenSearch)
+- [PHP 8.2](#PHP)
+- [Composer 2.2](#Composer)
+- [Nginx 1.22](#Nginx)
+- [ElasticSearch 8.5](#ElasticSearch)
+- [OpenSearch 2.5](#OpenSearch)
+- [MariaDB 10.6](#MariaDB)
+- [RabbitMQ 3.11](#RabbitMQ)
+- [Redis 7.0](#Redis)
+- [Varnish 7.3](#Varnish)
+- [Magento 2.4.6 p2](#Magento)
+- [Magento ElasticSearch](#Magento-ElasticSearch)
+- [Magento OpenSearch](#Magento-OpenSearch)
 
 
 ## PHP
