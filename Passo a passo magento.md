@@ -9,6 +9,31 @@
 - Varnish 7.3
 - Nginx 1.22
 
+## PHP
+- [Link para a seção PHP](#PHP)
+## Composer
+- [Link para a seção Composer](#Composer)
+## Nginx
+- [Link para a seção Nginx](#Nginx)
+## ElasticSearch
+- [Link para a seção ElasticSearch](#ElasticSearch)
+## OpenSearch
+- [Link para a seção OpenSearch](#OpenSearch)
+## MariaDB
+- [Link para a seção MariaDB](#MariaDB)
+## RabbitMQ
+- [Link para a seção RabbitMQ](#RabbitMQ)
+## Redis
+- [Link para a seção Redis](#Redis)
+## Varnish
+- [Link para a seção Varnish](#Varnish)
+## Magento
+- [Link para a seção Magento](#Magento)
+## Magento ElasticSearch
+- [Link para a seção Magento ElasticSearch](#Magento-ElasticSearch)
+## Magento OpenSearch
+- [Link para a seção Magento OpenSearch](#Magento-OpenSearch)
+
 
 ## PHP
 ```
