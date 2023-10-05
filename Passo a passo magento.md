@@ -16,8 +16,9 @@ sudo apt update
 sudo apt install -y libxml2-dev libzip-dev
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-sudo apt install -y php8.2 php-fpm php8.2-bcmath php8.2-ctype php8.2-curl php8.2-dom php8.2-fileinfo php8.2-filter php8.2-gd php8.2-hash php8.2-iconv php8.2-intl php8.2-json php8.2-libxml php8.2-mbstring php8.2-openssl php8.2-pcre php8.2-pdo-mysql php8.2-simplexml php8.2-soap php8.2-sockets php8.2-sodium php8.2-spl php8.2-tokenizer php8.2-xmlwriter php8.2-xsl php8.2-zip php8.2-zlib
-
+sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-ctype php8.2-curl php8.2-dom php8.2-fileinfo php8.2 filter php8.2 gd php8.2 hash php8.2-iconv php8.2-intl php8.2 json php8.2 libxml php8.2-mbstring php8.2-openssl php8.2-pcre php-mysql php8.2-simplexml php8.2-soap php8.2-sockets php8.2-sodium php8.2-spl php8.2-tokenizer php8.2-xmlwriter php8.2-xsl php8.2-zip php8.2-zlib
+#verificar modulos instalados
+php --modules
 sudo nano /etc/php/8.2/cli/php.ini
 Aumentar os valores do PHP realpath_cache_size e realpath_cache_ttl para configurações recomendadas:
 memory_limit=2G
