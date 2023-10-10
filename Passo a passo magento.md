@@ -1,13 +1,17 @@
 # Dependências Magento2 2.4.6p2
 
-- Composer 2.2
-- ElasticSearch 8.5
-- MariaDB 10.6
-- PHP 8.2
-- RabbitMQ 3.11
-- Redis 7.0
-- Varnish 7.3
-- Nginx 1.22
+- [PHP 8.2](#PHP)
+- [Composer 2.2](#Composer)
+- [Nginx 1.22](#Nginx)
+- [ElasticSearch 8.5](#ElasticSearch)
+- [OpenSearch 2.5](#OpenSearch)
+- [MariaDB 10.6](#MariaDB)
+- [RabbitMQ 3.11](#RabbitMQ)
+- [Redis 7.0](#Redis)
+- [Varnish 7.3](#Varnish)
+- [Magento 2.4.6 p2](#Magento)
+- [Magento ElasticSearch](#Magento-ElasticSearch)
+- [Magento OpenSearch](#Magento-OpenSearch)
 
 
 ## Nginx 
@@ -27,9 +31,15 @@ sudo apt update
 sudo apt install -y libxml2-dev libzip-dev
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
+<<<<<<< HEAD
 sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-common php8.2-curl php8.2-xml php8.2-gd php8.2-intl php8.2-cli php8.2-mbstring php8.2-mysql php8.2-soap php8.2-xsl php8.2-zip
 
 Altere os valores abaixo nos arquivos citados
+=======
+sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-ctype php8.2-curl php8.2-dom php8.2-fileinfo php8.2 filter php8.2 gd php8.2 hash php8.2-iconv php8.2-intl php8.2 json php8.2 libxml php8.2-mbstring php8.2-openssl php8.2-pcre php-mysql php8.2-simplexml php8.2-soap php8.2-sockets php8.2-sodium php8.2-spl php8.2-tokenizer php8.2-xmlwriter php8.2-xsl php8.2-zip php8.2-zlib
+#verificar modulos instalados
+php --modules
+>>>>>>> 42f7a933a45eb2b2f6906679f55bad6af67b34d6
 sudo nano /etc/php/8.2/cli/php.ini
     memory_limit=2G
     realpath_cache_size=10M
@@ -245,6 +255,16 @@ chmod u+x bin/magento
 
 ## Config Magento
 ``` 
+<<<<<<< HEAD
 bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
+=======
+bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=elasticsearch8 --elasticsearch-host=localhost --elasticsearch-port=9200 --elasticsearch-index-prefix=magento2
+
+``` 
+
+## Magento OpenSearch
+``` 
+bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magento --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
+>>>>>>> 42f7a933a45eb2b2f6906679f55bad6af67b34d6
 
 ``` 
