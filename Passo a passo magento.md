@@ -99,7 +99,6 @@ sudo ln -s /etc/nginx/sites-available/ecommerce /etc/nginx/sites-enabled/
 
 ## OpenSearch
 ```
-sudo apt install openjdk-17-jre-headless
 
 wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.5.0/opensearch-2.5.0-linux-x64.deb
 sudo dpkg -i opensearch-2.5.0-linux-x64.deb
@@ -218,13 +217,14 @@ sudo chmod 777 rabbitmq.sh
 
 ## Redis
 ```
-sudo apt install lsb-release curl gpg
-curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
-sudo apt-get update
-sudo apt-get install redis=7.0*
-sudo apt install redis=6:7.0.*
+wget https://download.redis.io/releases/redis-7.0.13.tar.gz
+tar -xzvf redis-7.0.13.tar.gz
+cd redis-7.0.13
+./configure
+make
+sudo make install
 redis-cli ping
+redis-server
 ```
 
 ## Varnish
