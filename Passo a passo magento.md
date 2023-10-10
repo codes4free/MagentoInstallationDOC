@@ -10,20 +10,37 @@
 - Nginx 1.22
 
 
+## Nginx 
+```
+sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \ | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \ http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \ | sudo tee /etc/apt/sources.list.d/nginx.list
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \ | sudo tee /etc/apt/preferences.d/99nginx
+sudo apt update
+sudo apt install nginx=1.22.*
+```
+
 ## PHP
 ```
 sudo apt update
 sudo apt install -y libxml2-dev libzip-dev
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-sudo apt install -y php8.2 php-fpm php8.2-bcmath php8.2-ctype php8.2-curl php8.2-dom php8.2-fileinfo php8.2-filter php8.2-gd php8.2-hash php8.2-iconv php8.2-intl php8.2-json php8.2-libxml php8.2-mbstring php8.2-openssl php8.2-pcre php8.2-pdo-mysql php8.2-simplexml php8.2-soap php8.2-sockets php8.2-sodium php8.2-spl php8.2-tokenizer php8.2-xmlwriter php8.2-xsl php8.2-zip php8.2-zlib
+sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-common php8.2-curl php8.2-xml php8.2-gd php8.2-intl php8.2-cli php8.2-mbstring php8.2-mysql php8.2-soap php8.2-xsl php8.2-zip
 
+Altere os valores abaixo nos arquivos citados
 sudo nano /etc/php/8.2/cli/php.ini
-Aumentar os valores do PHP realpath_cache_size e realpath_cache_ttl para configurações recomendadas:
-memory_limit=2G
-realpath_cache_size=10M
-realpath_cache_ttl=7200
-date.timezone=America/Sao_Paulo
+    memory_limit=2G
+    realpath_cache_size=10M
+    realpath_cache_ttl=7200
+    date.timezone=America/Sao_Paulo
+
+sudo nano /etc/php/8.2/fpm/php.ini
+    memory_limit=2G
+    realpath_cache_size=10M
+    realpath_cache_ttl=7200
+    date.timezone=America/Sao_Paulo
 ```
 
 ## Composer
@@ -40,18 +57,13 @@ sudo mv composer.phar /usr/bin/composer
 sudo chmod 777 /usr/bin/composer
 ```
 
-## Nginx 
+## Config Nginx 
 ```
-sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
-curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \ | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \ http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \ | sudo tee /etc/apt/sources.list.d/nginx.list
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \ | sudo tee /etc/apt/preferences.d/99nginx
-sudo apt update
-sudo apt install nginx
 sudo nano /etc/nginx/nginx.conf
     server_names_hash_bucket_size 64;
 sudo systemctl restart nginx
-
+sudo mkdir /etc/nginx/sites-available
+sudo mkdir /etc/nginx/sites-enabled
 sudo nano /etc/nginx/sites-available/ecommerce
 
 // escrever dentro o conteúdo abaixo
@@ -62,7 +74,7 @@ upstream fastcgi_backend
 server {
         listen 80;
         listen [::]:80;
-        server_name svhr-ecommerce2 svhr-ecommerce2.microware.com.br;
+        server_name svpr-ecommerce3 svpr-ecommerce3.microware.com.br;
         set $MAGE_ROOT /var/www/ecommerce;
         include /var/www/ecommerce/nginx.conf.sample;
         client_max_body_size 2M;
@@ -75,26 +87,18 @@ server {
 sudo ln -s /etc/nginx/sites-available/ecommerce /etc/nginx/sites-enabled/
 ```
 
-## ElasticSearch
-```
-sudo wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.5.0-amd64.deb.sha512
-shasum -a 512 -c elasticsearch-8.5.0-amd64.deb.sha512
-sudo dpkg -i elasticsearch-8.5.0-amd64.deb
-sudo nano /etc/elasticsearch/elasticsearch.yml
-sudo systemctl daemon-reload
-sudo systemctl enable elasticsearch.service
-sudo systemctl start elasticsearch.service
-```
-
 ## OpenSearch
 ```
-sudo wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.5.0/opensearch-2.5.0-linux-x64.tar.gz
-tar -xvf opensearch-2.5.0-linux-x64.tar.gz
-cd opensearch-2.5.0
-sudo swapoff -a
+sudo apt install openjdk-17-jre-headless
+
+wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.5.0/opensearch-2.5.0-linux-x64.deb
+sudo dpkg -i opensearch-2.5.0-linux-x64.deb
+sudo systemctl enable opensearch
+sudo systemctl start opensearch
+sudo systemctl status opensearch
 
 # Edit the sysctl config file
-sudo vi /etc/sysctl.conf
+sudo nano /etc/sysctl.conf
 
 # Add a line to define the desired value
 # or change the value if the key exists,
@@ -109,6 +113,25 @@ cat /proc/sys/vm/max_map_count
 
 ./opensearch-tar-install.sh
 curl -X GET https://localhost:9200 -u 'admin:admin' --insecure
+
+reposta esperada:
+
+{    "name":"hostname",
+    "cluster_name":"opensearch",
+    "cluster_uuid":"QqgpHCbnSRKcPAizqjvoOw",
+    "version":{       "distribution":"opensearch",
+       "number":<version>,
+       "build_type":<build-type>,
+       "build_hash":<build-hash>,
+       "build_date":<build-date>,
+       "build_snapshot":false,
+       "lucene_version":<lucene-version>,
+       "minimum_wire_compatibility_version":"7.10.0",
+       "minimum_index_compatibility_version":"7.0.0"
+    },
+    "tagline":"The OpenSearch Project: https://opensearch.org/"
+ }
+
 ```
 
 ## MariaDB
@@ -120,22 +143,67 @@ mariadb --version
 systemctl status mariadb
 sudo mysql_secure_installation
 sudo mariadb
-> flush privileges
+flush privileges;
 CREATE DATABASE magento;
 SHOW DATABASES;
-> CREATE USER 'magento'@'localhost' IDENTIFIED BY '3Comm3rc3';
-> GRANT ALL PRIVILEGES ON *.* to 'magento'@'localhost';
-> quit;
+CREATE USER 'magento'@'localhost' IDENTIFIED BY '3Comm3rc3';
+GRANT ALL PRIVILEGES ON *.* to 'magento'@'localhost';
+quit;
 ```
 
 ## RabbitMQ
 ```
-sudo apt install socat logrotate init-system-helpers adduser -y
-wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.10.7/rabbitmq-server_3.10.7-1_all.deb
-sudo dpkg -i rabbitmq-server_3.10.7-1_all.deb
-sudo apt --fix-broken install -y
-sudo rabbitmq-server
-sudo apt purge rabbitmq-server -y
+nano rabbitmq.sh
+//inicio
+#!/bin/sh
+
+sudo apt-get install curl gnupg apt-transport-https -y
+
+## Team RabbitMQ's main signing key
+curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/com.rabbitmq.team.gpg > /dev/null
+## Community mirror of Cloudsmith: modern Erlang repository
+curl -1sLf https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key | sudo gpg --dearmor | sudo tee /usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg > /dev/null
+## Community mirror of Cloudsmith: RabbitMQ repository
+curl -1sLf https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key | sudo gpg --dearmor | sudo tee /usr/share/keyrings/rabbitmq.9F4587F226208342.gpg > /dev/null
+
+## Add apt repositories maintained by Team RabbitMQ
+sudo tee /etc/apt/sources.list.d/rabbitmq.list <<EOF
+## Provides modern Erlang/OTP releases
+##
+deb [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu jammy main
+deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu jammy main
+
+# another mirror for redundancy
+deb [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa2.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu jammy main
+deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa2.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu jammy main
+
+## Provides RabbitMQ
+##
+deb [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-server/deb/ubuntu jammy main
+deb-src [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-server/deb/ubuntu jammy main
+
+# another mirror for redundancy
+deb [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa2.novemberain.com/rabbitmq/rabbitmq-server/deb/ubuntu jammy main
+deb-src [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa2.novemberain.com/rabbitmq/rabbitmq-server/deb/ubuntu jammy main
+EOF
+
+## Update package indices
+sudo apt-get update -y
+
+## Install Erlang packages
+sudo apt-get install -y erlang-base=1:25* \
+                        erlang-asn1=1:25* erlang-crypto=1:25* erlang-eldap=1:25* erlang-ftp=1:25* erlang-inets=1:25* \
+                        erlang-mnesia=1:25* erlang-os-mon=1:25* erlang-parsetools=1:25* erlang-public-key=1:25* \
+                        erlang-runtime-tools=1:25* erlang-snmp=1:25* erlang-ssl=1:25* \
+                        erlang-syntax-tools=1:25* erlang-tftp=1:25* erlang-tools=1:25* erlang-xmerl=1:25*
+
+## Install rabbitmq-server and its dependencies
+sudo apt-get install rabbitmq-server=3.11.* -y --fix-missing
+//fim
+
+sudo chmod 777 rabbitmq.sh
+./rabbitmq.sh
+
 ```
 
 ## Redis
@@ -144,21 +212,16 @@ sudo apt install lsb-release curl gpg
 curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 sudo apt-get update
-sudo apt-get install redis
+sudo apt-get install redis=7.0*
+sudo apt install redis=6:7.0.*
 redis-cli ping
 ```
 
 ## Varnish
 ```
-sudo apt update -y && sudo apt upgrade -y
-tee /etc/apt/sources.list.d/varnishcache_varnish70.list > /dev/null <<-EOF
-deb https://packagecloud.io/varnishcache/varnish70/ubuntu/ focal main
-deb-src https://packagecloud.io/varnishcache/varnish70/ubuntu/ focal main
-EOF
-
-sudo apt-update -y
-sudo apt install varnish -y
-sudo systemctl start varnish && sudo systemctl start varnish
+curl -s https://packagecloud.io/install/repositories/varnishcache/varnish73/script.deb.sh | sudo bash
+sudo apt-get install varnish=7.3.0-1~jammy
+sudo systemctl start varnish
 sudo systemctl status varnish
 ```
 
@@ -180,14 +243,8 @@ chown -R :www-data .
 chmod u+x bin/magento
 ``` 
 
-## Magento ElasticSearch
+## Config Magento
 ``` 
-bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=elasticsearch8 --elasticsearch-host=localhost --elasticsearch-port=9200 --elasticsearch-index-prefix=magento2
-
-``` 
-
-## Magento OpenSearch
-``` 
-bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
+bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
 
 ``` 
