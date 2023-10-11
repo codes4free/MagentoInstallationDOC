@@ -93,6 +93,13 @@ server {
 wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.5.0/opensearch-2.5.0-linux-x64.deb
 sudo dpkg -i opensearch-2.5.0-linux-x64.deb
 sudo systemctl enable opensearch
+
+nano /etc/opensearch/opensearch.yml
+#(add the following text)
+network.host: localhost
+node.name: node-1
+plugins.security.disabled: true
+
 sudo systemctl start opensearch
 sudo systemctl status opensearch
 
@@ -111,7 +118,7 @@ sudo sysctl -p
 cat /proc/sys/vm/max_map_count
 
 ./opensearch-tar-install.sh
-curl -X GET https://localhost:9200 -u 'admin:admin' --insecure
+curl -X GET https://localhost:9200
 
 reposta esperada:
 
@@ -253,6 +260,6 @@ sudo find var generated vendor pub/static pub/media app/etc -type d -exec chmod 
 sudo chown -R :www-data .
 sudo chmod u+x bin/magento
 
-bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magento --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
+sudo bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magento --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
 
 ``` 
