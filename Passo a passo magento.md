@@ -219,11 +219,22 @@ sudo chmod 777 rabbitmq.sh
 ```
 wget https://download.redis.io/releases/redis-7.0.13.tar.gz
 tar -xzvf redis-7.0.13.tar.gz
+sudo apt install make 
+sudo apt-get install -y pkg-config
+sudo apt-get update
+sudo apt install gcc
+sudo apt-get install tcl
 cd redis-7.0.13
-./configure
-make
+sudo make distclean
 sudo make install
-redis-cli ping
+sudo mkdir /etc/redis
+sudo mkdir /var/redis
+sudo cp utils/redis_init_script /etc/init.d/redis_6379
+sudo cp redis.conf /etc/redis/6379.conf
+sudo mkdir /var/redis/6379
+sudo mkdir /var/log/redis
+sudo update-rc.d redis_6379 defaults
+sudo /etc/init.d/redis_6379 start
 redis-server
 ```
 
@@ -255,16 +266,6 @@ chmod u+x bin/magento
 
 ## Config Magento
 ``` 
-<<<<<<< HEAD
 bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
-=======
-bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=elasticsearch8 --elasticsearch-host=localhost --elasticsearch-port=9200 --elasticsearch-index-prefix=magento2
-
-``` 
-
-## Magento OpenSearch
-``` 
-bin/magento setup:install --base-url=http://svhr-ecommerce2.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magento --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
->>>>>>> 42f7a933a45eb2b2f6906679f55bad6af67b34d6
 
 ``` 
