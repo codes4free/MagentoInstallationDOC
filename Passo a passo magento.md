@@ -242,18 +242,16 @@ sudo systemctl status varnish
 sudo mkdir /var/www
 cd /var/www
 sudo composer config --global http-basic.repo.magento.com 7d8df27f946bc44bfdbdb008cafa315b ee253cef3714a26598c0cf6447b5dce2
-sudo composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6-p2 /var/www/ecommerce
-Public Key: 7d8df27f946bc44bfdbdb008cafa315b
-Private Key: ee253cef3714a26598c0cf6447b5dce2
+sudo composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6-p2 -vvv /var/www/ecommerce
 
 sudo nginx -s reload
 sudo nginx -t
 
 cd /var/www/ecommerce
-find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
-find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
-chown -R :www-data .
-chmod u+x bin/magento
+sudo find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
+sudo find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+sudo chown -R :www-data .
+sudo chmod u+x bin/magento
 
 bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
 
