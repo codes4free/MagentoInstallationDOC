@@ -29,7 +29,7 @@ sudo apt update
 sudo apt install -y libxml2-dev libzip-dev
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-common php8.2-curl php8.2-xml php8.2-gd php8.2-intl php8.2-cli php8.2-mbstring php8.2-mysql php8.2-soap php8.2-xsl php8.2-zip
+sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-common php8.2-curl php8.2-xml php8.2-gd php8.2-intl php8.2-cli php8.2-mbstring php8.2-mysql php8.2-spl php8.2-soap php8.2-xsl php8.2-zip
 
 Altere os valores abaixo nos arquivos citados
 sudo nano /etc/php/8.2/cli/php.ini
@@ -142,11 +142,11 @@ mariadb --version
 systemctl status mariadb
 sudo mysql_secure_installation
 sudo mariadb
-flush privileges;
 CREATE DATABASE magento;
 SHOW DATABASES;
-CREATE USER 'magento'@'localhost' IDENTIFIED BY '3Comm3rc3';
+CREATE USER 'magento'@'localhost' IDENTIFIED BY '3C0mm3rc3';
 GRANT ALL PRIVILEGES ON *.* to 'magento'@'localhost';
+flush privileges;
 quit;
 ```
 
@@ -253,6 +253,6 @@ sudo find var generated vendor pub/static pub/media app/etc -type d -exec chmod 
 sudo chown -R :www-data .
 sudo chmod u+x bin/magento
 
-bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
+bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magento --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
 
 ``` 
