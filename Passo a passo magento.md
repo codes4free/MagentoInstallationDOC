@@ -1,17 +1,15 @@
 # Dependências Magento2 2.4.6p2
 
+- [Nginx 1.22](#Nginx)
 - [PHP 8.2](#PHP)
 - [Composer 2.2](#Composer)
-- [Nginx 1.22](#Nginx)
-- [ElasticSearch 8.5](#ElasticSearch)
+- [Config Nginx](#Config-Nginx)
 - [OpenSearch 2.5](#OpenSearch)
 - [MariaDB 10.6](#MariaDB)
 - [RabbitMQ 3.11](#RabbitMQ)
 - [Redis 7.0](#Redis)
 - [Varnish 7.3](#Varnish)
 - [Magento 2.4.6 p2](#Magento)
-- [Magento ElasticSearch](#Magento-ElasticSearch)
-- [Magento OpenSearch](#Magento-OpenSearch)
 
 
 ## Nginx 
@@ -31,15 +29,9 @@ sudo apt update
 sudo apt install -y libxml2-dev libzip-dev
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-<<<<<<< HEAD
 sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-common php8.2-curl php8.2-xml php8.2-gd php8.2-intl php8.2-cli php8.2-mbstring php8.2-mysql php8.2-soap php8.2-xsl php8.2-zip
 
 Altere os valores abaixo nos arquivos citados
-=======
-sudo apt install -y php8.2 php8.2-fpm php8.2-bcmath php8.2-ctype php8.2-curl php8.2-dom php8.2-fileinfo php8.2 filter php8.2 gd php8.2 hash php8.2-iconv php8.2-intl php8.2 json php8.2 libxml php8.2-mbstring php8.2-openssl php8.2-pcre php-mysql php8.2-simplexml php8.2-soap php8.2-sockets php8.2-sodium php8.2-spl php8.2-tokenizer php8.2-xmlwriter php8.2-xsl php8.2-zip php8.2-zlib
-#verificar modulos instalados
-php --modules
->>>>>>> 42f7a933a45eb2b2f6906679f55bad6af67b34d6
 sudo nano /etc/php/8.2/cli/php.ini
     memory_limit=2G
     realpath_cache_size=10M
@@ -70,11 +62,11 @@ sudo chmod 777 /usr/bin/composer
 ## Config Nginx 
 ```
 sudo nano /etc/nginx/nginx.conf
+    include /etc/nginx/sites-enabled/*;
     server_names_hash_bucket_size 64;
 sudo systemctl restart nginx
-sudo mkdir /etc/nginx/sites-available
-sudo mkdir /etc/nginx/sites-enabled
-sudo nano /etc/nginx/sites-available/ecommerce
+sudo mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.old
+sudo nano /etc/nginx/conf.d/ecommerce.conf
 
 // escrever dentro o conteúdo abaixo
 upstream fastcgi_backend
@@ -93,8 +85,6 @@ server {
         error_log /var/log/nginx/magento.error;
 }
 // fim
-
-sudo ln -s /etc/nginx/sites-available/ecommerce /etc/nginx/sites-enabled/
 ```
 
 ## OpenSearch
@@ -249,8 +239,10 @@ sudo systemctl status varnish
 
 ## Magento
 ```
+sudo mkdir /var/www
 cd /var/www
-composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6-p2 /var/www/ecommerce
+sudo composer config --global http-basic.repo.magento.com 7d8df27f946bc44bfdbdb008cafa315b ee253cef3714a26598c0cf6447b5dce2
+sudo composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6-p2 /var/www/ecommerce
 Public Key: 7d8df27f946bc44bfdbdb008cafa315b
 Private Key: ee253cef3714a26598c0cf6447b5dce2
 
@@ -262,10 +254,7 @@ find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {
 find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
 chown -R :www-data .
 chmod u+x bin/magento
-``` 
 
-## Config Magento
-``` 
 bin/magento setup:install --base-url=http://svpr-ecommerce3.microware.com.br --backend-frontname=admin --db-host=localhost --db-name=magento --db-user=magentoUser --db-password=3C0mm3rc3 --admin-firstname=eCommerce --admin-lastname=Microware --admin-email=ecommerce@microware.com.br --admin-user=admin --admin-password=3C0mm3rc3 --language=pt_BR --currency=BRL --timezone=America/Sao_Paulo --use-rewrites=1 --search-engine=opensearch --opensearch-host=localhost --opensearch-port=9200 --opensearch-index-prefix=magento2
 
 ``` 
