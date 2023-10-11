@@ -94,7 +94,7 @@ wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.5.0/opensearc
 sudo dpkg -i opensearch-2.5.0-linux-x64.deb
 sudo systemctl enable opensearch
 
-nano /etc/opensearch/opensearch.yml
+sudo nano /etc/opensearch/opensearch.yml
 #(add the following text)
 network.host: localhost
 node.name: node-1
